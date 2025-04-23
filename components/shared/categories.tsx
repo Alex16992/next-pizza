@@ -1,40 +1,63 @@
+"use client";
+
 import { cn } from "@/lib/utils";
-import React, { FC } from "react";
+import { useCategoryStore } from "@/store/category";
+import { motion } from "framer-motion";
+import { a } from "motion/react-client";
+import React, { FC, useRef } from "react";
 
 interface CategoriesProps {
   className?: string;
 }
 
 const cats = [
-  "Пиццы",
-  "Комбо",
-  "Закуски",
-  "Коктейли",
-  "Кофе",
-  "Напитки",
-  "Десерты",
-  "Десерты",
+  { id: 1, name: "Пиццы" },
+  { id: 2, name: "Комбо" },
+  { id: 3, name: "Закуски" },
+  { id: 4, name: "Коктейли" },
+  { id: 5, name: "Кофе" },
+  { id: 6, name: "Напитки" },
+  { id: 7, name: "Десерты" },
+  { id: 8, name: "Десерты" },
 ];
-const activeIndex = 0;
 
 export const Categories: FC<CategoriesProps> = ({ className }) => {
+  const categoryActiveId = useCategoryStore((state) => state.activeId);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   return (
     <div
-      className={cn("inline-flex gap-1 bg-gray-50 p-1 rounded-2xl", className)}
+      ref={containerRef}
+      className={cn(
+        "relative inline-flex gap-1 bg-gray-50 p-1 rounded-2xl",
+        className
+      )}
     >
-      {cats.map((cat, index) => (
-        <a
-          href="#"
-          className={cn(
-            "flex item-center font-bold h-11 rounded-2xl py-2 px-6",
-            activeIndex === index &&
-              "bg-white shadow-md shadow-gray-200 text-primary"
-          )}
-          key={index}
-        >
-          <button>{cat}</button>
-        </a>
-      ))}
+      {cats.map(({ name, id }) => {
+        const isActive = categoryActiveId === id;
+
+        return (
+          <a key={id} href={`#${name}`}>
+            <div className="relative">
+              {categoryActiveId === id && (
+                <motion.div
+                  layoutId="category-highlight"
+                  className="absolute inset-0 z-0 bg-white shadow-md shadow-gray-200 rounded-2xl"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+              )}
+              <button
+                className={cn(
+                  "relative z-10 flex items-center font-bold h-11 rounded-2xl py-2 px-6 transition-colors",
+                  isActive ? "text-primary" : "text-gray-500"
+                )}
+              >
+                {name}
+              </button>
+            </div>
+          </a>
+        );
+      })}
     </div>
   );
 };
