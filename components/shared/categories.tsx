@@ -2,26 +2,16 @@
 
 import { cn } from "@/lib/utils";
 import { useCategoryStore } from "@/store/category";
+import { Category } from "@prisma/client";
 import { motion } from "framer-motion";
-import { a } from "motion/react-client";
 import React, { FC, useRef } from "react";
 
 interface CategoriesProps {
+  items: Category[];
   className?: string;
 }
 
-const cats = [
-  { id: 1, name: "Пиццы" },
-  { id: 2, name: "Комбо" },
-  { id: 3, name: "Закуски" },
-  { id: 4, name: "Коктейли" },
-  { id: 5, name: "Кофе" },
-  { id: 6, name: "Напитки" },
-  { id: 7, name: "Десерты" },
-  { id: 8, name: "Десерты" },
-];
-
-export const Categories: FC<CategoriesProps> = ({ className }) => {
+export const Categories: FC<CategoriesProps> = ({ items, className }) => {
   const categoryActiveId = useCategoryStore((state) => state.activeId);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -33,7 +23,7 @@ export const Categories: FC<CategoriesProps> = ({ className }) => {
         className
       )}
     >
-      {cats.map(({ name, id }) => {
+      {items.map(({ name, id }) => {
         const isActive = categoryActiveId === id;
 
         return (
@@ -48,7 +38,7 @@ export const Categories: FC<CategoriesProps> = ({ className }) => {
               )}
               <button
                 className={cn(
-                  "relative z-10 flex items-center font-bold h-11 rounded-2xl py-2 px-6 transition-colors",
+                  "relative z-10 flex cursor-pointer items-center font-bold h-11 rounded-2xl py-2 px-6 transition-colors",
                   isActive ? "text-primary" : "text-gray-500"
                 )}
               >

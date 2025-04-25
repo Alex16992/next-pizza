@@ -22,7 +22,11 @@ export const ProductCard: FC<ProductCardProps> = ({
 }) => {
   return (
     <div className={className}>
-      <Link href={`/product/${id}`}>
+      <Link
+        href={`/product/${id}`}
+        scroll={false}
+        className="flex flex-col h-full"
+      >
         <div className="flex justify-center p-6 bg-secondary/20 rounded-lg h-[260px]">
           <Image width={215} height={215} src={imageUrl} alt={name} />
         </div>
@@ -32,12 +36,12 @@ export const ProductCard: FC<ProductCardProps> = ({
           альфредо, чеснок
         </p>
 
-        <div className="flex justify-between items-center mt-4">
-          <span className="text-[20px]">
+        <div className="flex justify-between items-center mt-auto">
+          <span className="text-[20px] mt-4">
             от <b>{price} ₽</b>
           </span>
 
-          <Button variant="secondary">
+          <Button variant="secondary" className="mt-4">
             <Plus className="w-4 h-4 mr-1" />
             Добавить
           </Button>
